@@ -5,6 +5,29 @@ export function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [activeCategory, setActiveCategory] = React.useState("All");
   const [openFaq, setOpenFaq] = React.useState<number | null>(null);
+  const [minutesAgo, setMinutesAgo] = React.useState(0);
+
+  // All your hero flyer images — add/swap as many as you want here
+  const heroSlides = [
+    "https://picsum.photos/id/1015/620/720",
+    "https://picsum.photos/id/133/620/720",
+    "https://picsum.photos/id/160/620/720",
+    "https://picsum.photos/id/201/620/720",
+    "https://picsum.photos/id/251/620/720",
+  ];
+
+  // Pick one random image per page load — stays fixed until next refresh
+  const [currentSlide] = React.useState(() => Math.floor(Math.random() * heroSlides.length));
+
+  // Live-ticking "last order" counter
+  React.useEffect(() => {
+    const start = Math.floor(Math.random() * 14) + 4;
+    setMinutesAgo(start);
+    const interval = setInterval(() => {
+      setMinutesAgo(prev => (prev >= 59 ? 1 : prev + 1));
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   const whatsappNumber = "+233530283723";
   const instagramHandle = "@flyerplugh";
@@ -61,6 +84,12 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white overflow-x-hidden">
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: scale(1.03); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-zinc-950/90 backdrop-blur-md border-b border-white/10">
@@ -118,14 +147,14 @@ export function App() {
 
       {/* HERO */}
       <section className="pt-24 pb-16 md:pt-32 relative bg-[radial-gradient(at_bottom_right,#3a2a1f_0%,transparent_60%)]">
-        <div className="max-w-screen-2xl mx-auto px-6 grid md:grid-cols-12 gap-12 items-center">
+        <div className="max-w-screen-2xl mx-auto px-6 grid md:grid-cols-12 gap-6 md:gap-12 items-center">
           <div className="md:col-span-7 space-y-8">
             <div className="inline-flex items-center gap-2 rounded-3xl bg-white/5 px-4 py-1 text-xs tracking-[0.5px] border border-white/10">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
               GHANA'S #1 FLYER DESIGNER
             </div>
 
-            <h1 className="text-6xl md:text-[68px] leading-[1.05] font-semibold tracking-tighter">
+            <h1 className="text-4xl sm:text-5xl md:text-[68px] leading-[1.05] font-semibold tracking-tighter">
               PREMIUM FLYERS.<br />JUST <span className="text-orange-400">GH₵30</span>
             </h1>
 
@@ -143,7 +172,7 @@ export function App() {
               </button>
             </div>
 
-            <div className="flex items-center gap-8 text-sm pt-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 text-sm pt-4">
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-3">
                   <div className="w-6 h-6 bg-zinc-700 border-2 border-zinc-950 rounded-full"></div>
@@ -154,29 +183,32 @@ export function App() {
                   <div className="text-zinc-400 text-xs -mt-0.5">re-order</div>
                 </div>
               </div>
-              <div className="h-9 w-px bg-white/10"></div>
-              <div className="text-zinc-400 text-sm flex items-center gap-1.5">
-                <Check className="text-emerald-400" /> FAST • <Check className="text-emerald-400" /> CLEAN • <Check className="text-emerald-400" /> AFFORDABLE
+              <div className="hidden sm:block h-9 w-px bg-white/10"></div>
+              <div className="text-zinc-400 text-sm flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                <Check className="text-emerald-400" /> FAST •&nbsp;
+                <Check className="text-emerald-400" /> CLEAN •&nbsp;
+                <Check className="text-emerald-400" /> AFFORDABLE
               </div>
             </div>
           </div>
 
-          {/* Hero Visual — MOBILE FIXED */}
-          <div className="md:col-span-5 relative mt-12 md:mt-0 overflow-hidden md:overflow-visible">
+          {/* Hero Visual — random image per page load with fade+zoom */}
+          <div className="md:col-span-5 relative mt-4 md:mt-0 overflow-hidden md:overflow-visible">
             <div className="relative pb-8 pr-4 md:pb-0 md:pr-0">
-              {/* Glow hidden on mobile to prevent horizontal bleed */}
               <div className="hidden md:block absolute -inset-8 bg-gradient-to-br from-orange-500/10 to-transparent rounded-[4rem] -rotate-6"></div>
               <div className="relative bg-zinc-900 border border-white/10 rounded-3xl p-3 shadow-2xl">
                 <img
-                  src="https://picsum.photos/id/1015/620/720"
+                  key={currentSlide}
+                  src={heroSlides[currentSlide]}
                   alt="Premium flyer design example"
-                  className="w-full max-w-full rounded-2xl shadow-inner object-cover"
+                  className="w-full max-h-[420px] md:max-h-none rounded-2xl object-cover"
+                  style={{ animation: "fadeIn 0.9s ease-in-out" }}
                 />
-                {/* Badge tucked inside on mobile, floats outside on desktop */}
+                {/* Live minutes-ago badge */}
                 <div className="absolute -bottom-5 right-2 md:-right-5 bg-zinc-900 border border-white/10 text-xs px-4 md:px-6 py-3 rounded-2xl shadow-xl flex items-center gap-3">
                   <div className="text-emerald-400">✓</div>
                   <div>
-                    <div className="font-mono text-orange-400">30</div>
+                    <div className="font-mono text-orange-400">{minutesAgo}</div>
                     <div className="text-[10px] text-zinc-400 -mt-1">MINUTES AGO</div>
                   </div>
                   <div className="text-xs text-zinc-400">LAST ORDER DELIVERED</div>
@@ -208,7 +240,6 @@ export function App() {
           <div className="uppercase text-orange-400 text-xs tracking-[2px] font-medium mb-3">WHY FLYER PLUG GH</div>
           <h2 className="text-5xl tracking-tighter font-semibold max-w-md">Flyers that convert. Service you can trust.</h2>
         </div>
-
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             { icon: "⚡", title: "Lightning Fast", desc: "Most designs delivered in under 90 minutes. Perfect for last minute events." },
@@ -374,7 +405,6 @@ export function App() {
           <div className="text-orange-400 text-xs font-medium tracking-widest">DON'T JUST TAKE OUR WORD</div>
           <h2 className="text-5xl font-semibold tracking-tight mt-3">Real people. Real results.</h2>
         </div>
-
         <div className="grid md:grid-cols-3 gap-6">
           {testimonials.map((testimonial, idx) => (
             <div key={idx} className="bg-zinc-900 rounded-3xl p-8 border border-white/5">
@@ -398,7 +428,6 @@ export function App() {
           <div className="text-sm uppercase text-orange-400 tracking-widest">3 STEPS. THAT'S IT.</div>
           <h2 className="text-5xl font-semibold tracking-tighter mt-3">From idea to flyer in minutes</h2>
         </div>
-
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {[
             { num: "01", title: "Tell us what you need", desc: "Send a WhatsApp message with your event or business name, details, preferred colors and any reference images." },
@@ -424,7 +453,6 @@ export function App() {
             <div className="uppercase tracking-widest text-xs text-orange-400">SUPPORT</div>
             <h2 className="text-5xl font-semibold tracking-tight mt-2">Frequently asked questions</h2>
           </div>
-
           <div className="space-y-4">
             {faqs.map((faq, index) => (
               <div
@@ -450,7 +478,6 @@ export function App() {
         <div className="max-w-2xl mx-auto px-6 text-center">
           <h2 className="text-6xl font-semibold tracking-tight leading-none">Ready to get a flyer<br />that actually works?</h2>
           <p className="mt-8 text-xl text-zinc-400 max-w-xs mx-auto">Stop using boring templates. Get a custom design today.</p>
-
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
             <button onClick={openWhatsApp} className="flex-1 sm:flex-none bg-white text-black py-5 px-14 rounded-3xl font-semibold text-lg flex items-center justify-center gap-3 hover:bg-amber-100">
               <span>CHAT ON WHATSAPP</span>
@@ -461,7 +488,6 @@ export function App() {
               DM US ON INSTAGRAM
             </button>
           </div>
-
           <div className="text-xs mt-12 text-zinc-500">Average response time: 4 minutes</div>
         </div>
       </section>
@@ -499,7 +525,6 @@ export function App() {
                   <div className="text-zinc-400 text-sm">+233 55 123 4567</div>
                 </div>
               </a>
-
               <a href={`https://instagram.com/${instagramHandle.replace("@", "")}`} target="_blank" className="flex items-center gap-4 group">
                 <div className="w-12 h-12 bg-pink-500/10 rounded-2xl flex items-center justify-center text-pink-400 group-hover:bg-pink-500/20 transition-colors">
                   <Instagram className="w-6 h-6" />
@@ -510,7 +535,6 @@ export function App() {
                 </div>
               </a>
             </div>
-
             <div className="mt-14 text-xs text-zinc-500 leading-loose">
               Accra, Ghana<br />
               Serving clients nationwide
