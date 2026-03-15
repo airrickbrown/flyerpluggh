@@ -494,8 +494,7 @@ export function App() {
 
                 <button 
                   onClick={openWhatsApp}
-                  className="mt-16 w-full py-6 text-lg font-semibold bg-orange-500 text-black rounded-3xl active:scale-[0.985] transition-all flex items-center justify-center gap-3"
-                >
+                  className="mt-16 w-full py-6 text-lg font-semibold bg-orange-500 text-black rounded-3xl active:scale-[0.985] transition-all flex items-center justify-center gap-3">
                   GET YOUR FLYER FOR GH₵30 
                   <ArrowRight />
                 </button>
@@ -504,8 +503,7 @@ export function App() {
               </div>
             </div>
           </div>
-        
-      </section>
+        </section>
 
       {/* TESTIMONIALS */}
       <section className="max-w-screen-2xl mx-auto px-6 py-20 bg-zinc-950">
