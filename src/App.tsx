@@ -259,14 +259,14 @@ export function App() {
           {/* Hero Visual */}
           <div className="md:col-span-5 relative mt-12 md:mt-0">
             <div className="relative">
-              <div className="absolute -inset-8 bg-gradient-to-br from-orange-500/10 to-transparent rounded-[4rem] -rotate-6"></div>
+              <div className="absolute -inset-8 bg-linear-to-br from-orange-500/10 to-transparent rounded-[4rem] -rotate-6"></div>
               <div className="bg-zinc-900 border border-white/10 rounded-3xl p-3 shadow-2xl">
                 <img 
                   src="https://picsum.photos/id/1015/620/720" 
                   alt="Premium flyer design example" 
                   className="w-full max-w-full rounded-2xl shadow-inner object-cover"
                 />
-                <div className="">
+                <div className="absolute -bottom-5 -right-5 bg-zinc-900 border border-white/10 text-xs px-6 py-3 rounded-2xl shadow-xl fex items-center gap-3">
                   <div className="text-emerald-400">✓</div>
                   <div>
                     <div className="font-mono text-orange-400">30</div>
@@ -365,11 +365,11 @@ export function App() {
                   <img 
                     src={item.image} 
                     alt={item.title}
-                    className="w-full aspect-[4/5] object-cover transition-all group-hover:scale-105 duration-700" 
+                    className="w-full aspect-4/5 object-cover transition-all group-hover:scale-105 duration-700" 
                   />
                 </div>
                 
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/90 to-transparent h-2/5"></div>
+                <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black via-black/90 to-transparent h-2/5"></div>
                 
                 <div className="absolute bottom-0 p-6 w-full">
                   <div className="inline-block uppercase text-[10px] tracking-widest bg-white/10 px-3 py-1 rounded-full mb-2 text-orange-400">{item.category}</div>
@@ -416,7 +416,7 @@ export function App() {
                   "Delivered via WhatsApp in 90 mins or less"
                 ].map((item, i) => (
                   <li key={i} className="flex gap-4 items-start">
-                    <div className="mt-1.5 w-5 h-5 rounded bg-emerald-400/10 flex items-center justify-center flex-shrink-0">
+                    <div className="mt-1.5 w-5 h-5 rounded bg-emerald-400/10 flex items-center justify-center shrink-0">
                       <Check className="text-emerald-400 w-3.5 h-3.5" />
                     </div>
                     <span className="text-zinc-300">{item}</span>
