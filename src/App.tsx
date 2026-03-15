@@ -264,9 +264,9 @@ export function App() {
                 <img 
                   src="https://picsum.photos/id/1015/620/720" 
                   alt="Premium flyer design example" 
-                  className="rounded-2xl shadow-inner"
+                  className="w-full max-w-full rounded-2xl shadow-inner object-cover"
                 />
-                <div className="absolute -bottom-5 -right-5 bg-zinc-900 border border-white/10 text-xs px-6 py-3 rounded-2xl shadow-xl flex items-center gap-3">
+                <div className="">
                   <div className="text-emerald-400">✓</div>
                   <div>
                     <div className="font-mono text-orange-400">30</div>
@@ -428,15 +428,34 @@ export function App() {
 
           <div className="lg:col-span-7">
             <div className="bg-zinc-900 border border-white/10 rounded-3xl p-2">
-              <div className="bg-zinc-950 rounded-3xl p-12">
-                <div className="flex justify-between items-start">
+              <div className="bg-zinc-950 rounded-3xl p-6 sm:p-12 overflow-hidden">
+  <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:items-start">
+    <div>
+      <div className="text-orange-400 font-medium">MOST POPULAR</div>
+      <div className="text-5xl sm:text-6xl font-semibold mt-2 tracking-tighter leading-none">
+        Premium Flyer
+      </div>
+    </div>
+
+    <div className="text-left sm:text-right">
+      <div className="text-6xl sm:text-7xl font-semibold tabular-nums tracking-tight text-orange-400 leading-none">
+        30
+      </div>
+      <div className="mt-1 sm:-mt-2 text-xs sm:text-sm text-zinc-400">
+        GHANAIAN CEDIS
+      </div>
+    </div>
+  </div>
+</div>
+                <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:items-start">
                   <div>
                     <div className="text-orange-400 font-medium">MOST POPULAR</div>
-                    <div className="text-6xl font-semibold mt-2 tracking-tighter">Premium Flyer</div>
+                    <div className="text-5xl sm:text-6xl font-semibold mt-2 tracking-tighter leading-none">Premium Flyer</div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-7xl font-semibold tabular-nums tracking-tighter text-orange-400">30</div>
-                    <div className="-mt-3 text-sm text-zinc-400">GHANAIAN CEDIS</div>
+                  <div className="text-left sm:text-right">
+  <div className="text-6xl sm:text-7xl font-semibold tabular-nums tracking-tight text-orange-400 leading-none">30</div>
+  <div className="mt-1 sm:-mt-2 text-xs sm:text-sm text-zinc-400">GHANAIAN CEDIS</div>
+</div>
                   </div>
                 </div>
 
