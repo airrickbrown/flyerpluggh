@@ -1,6 +1,77 @@
 import React from "react";
 import { Menu, X, ArrowRight, Check, Instagram } from "lucide-react";
 
+
+
+
+// LOGO COMPONENT 
+
+export function FlyerPlugLogo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
+  const scales = { sm: 0.7, md: 1, lg: 1.4 };
+  const s = scales[size];
+
+  return (
+    <svg
+      width={Math.round(160 * s)}
+      height={Math.round(36 * s)}
+      viewBox="0 0 160 36"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Flyer Plug GH"
+    >
+      {/* ── Icon mark: bold geometric "F" inside a cut-corner tile ── */}
+      <rect x="0" y="0" width="32" height="32" rx="8" fill="#f97316" />
+      {/* Top bar of F */}
+      <rect x="8" y="8"  width="16" height="4" rx="1.5" fill="#000" />
+      {/* Middle bar of F (shorter) */}
+      <rect x="8" y="14" width="11" height="4" rx="1.5" fill="#000" />
+      {/* Stem of F */}
+      <rect x="8" y="8"  width="4"  height="20" rx="1.5" fill="#000" />
+      {/* GH accent dot — small orange pip below the tile */}
+      <circle cx="16" cy="35" r="2" fill="#f97316" opacity="0.7" />
+
+      {/* ── Wordmark ── */}
+      {/* FLYER */}
+      <text
+        x="42"
+        y="23"
+        fontFamily="'Arial Black', 'Arial Bold', sans-serif"
+        fontWeight="900"
+        fontSize="16"
+        letterSpacing="-0.5"
+        fill="#ffffff"
+      >
+        FLYER
+      </text>
+      {/* PLUG */}
+      <text
+        x="97"
+        y="23"
+        fontFamily="'Arial Black', 'Arial Bold', sans-serif"
+        fontWeight="900"
+        fontSize="16"
+        letterSpacing="-0.5"
+        fill="#f97316"
+      >
+        PLUG
+      </text>
+      {/* GH — small country tag */}
+      <text
+        x="143"
+        y="30"
+        fontFamily="'Arial', sans-serif"
+        fontWeight="700"
+        fontSize="8"
+        letterSpacing="1"
+        fill="#f97316"
+        opacity="0.8"
+      >
+        GH
+      </text>
+    </svg>
+  );
+}
+
 export function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [activeCategory, setActiveCategory] = React.useState("All");
@@ -94,13 +165,14 @@ export function App() {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-zinc-950/90 backdrop-blur-md border-b border-white/10">
         <div className="max-w-screen-2xl mx-auto px-6 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          {/* <div className="flex items-center gap-3">
             <div className="h-9 w-9 bg-orange-500 rounded-xl flex items-center justify-center text-black font-bold text-2xl">F</div>
             <div>
               <div className="font-semibold tracking-tighter text-2xl">FLYER PLUG</div>
               <div className="text-[10px] text-orange-400 -mt-1">GH</div>
             </div>
-          </div>
+          </div> */}
+          <FlyerPlugLogo size="md" />
 
           <div className="hidden md:flex items-center gap-10 text-sm font-medium">
             <button onClick={() => scrollToSection("why")} className="hover:text-orange-400 transition-colors">Why Us</button>
@@ -496,10 +568,11 @@ export function App() {
       <footer className="bg-black border-t border-white/10 py-16">
         <div className="max-w-screen-2xl mx-auto px-6 grid md:grid-cols-12 gap-y-12">
           <div className="md:col-span-5">
-            <div className="flex items-center gap-3">
+            {/* <div className="flex items-center gap-3">
               <div className="h-9 w-9 bg-orange-500 text-black rounded-2xl flex items-center justify-center text-3xl font-black">F</div>
               <div className="font-semibold text-3xl tracking-tighter">FLYER PLUG GH</div>
-            </div>
+            </div> */}
+            <FlyerPlugLogo size="lg"/>
             <div className="mt-6 text-zinc-400 max-w-xs">Fast, clean and professional flyer designs for the modern Ghanaian entrepreneur.</div>
             <div className="mt-8 text-xs text-zinc-500">©️ {new Date().getFullYear()} Flyer Plug GH. All rights reserved.</div>
           </div>
