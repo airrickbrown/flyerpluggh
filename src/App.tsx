@@ -1,7 +1,29 @@
 import React from "react";
-import { Menu, X, ArrowRight, Check } from "lucide-react";
+import { Menu, X, ArrowRight, Check, Star } from "lucide-react";
 
-// ── Instagram SVG — official gradient ──
+type Review = {
+  id: string;
+  name: string;
+  role: string;
+  text: string;
+  rating: number;
+  approved: boolean;
+  timestamp: number;
+};
+
+const STORAGE_KEY = "fpgh_reviews";
+
+function getReviews(): Review[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+}
+
+function saveReviews(reviews: Review[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
+}
+
 function InstagramIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
@@ -19,7 +41,6 @@ function InstagramIcon({ className = "w-5 h-5" }: { className?: string }) {
   );
 }
 
-// ── WhatsApp SVG — official green ──
 function WhatsAppIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
@@ -28,7 +49,6 @@ function WhatsAppIcon({ className = "w-5 h-5" }: { className?: string }) {
   );
 }
 
-// ── Flyer Plug GH Logo — Option A ──
 function FlyerPlugLogo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
   const sizes = { sm: 34, md: 40, lg: 52 };
   const px = sizes[size];
@@ -62,12 +82,297 @@ function FlyerPlugLogo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
   );
 }
 
+function StarRating({ rating, onChange }: { rating: number; onChange?: (r: number) => void }) {
+  const [hovered, setHovered] = React.useState(0);
+  return (
+    <div className="flex gap-1">
+      {[1, 2, 3, 4, 5].map(star => (
+        <button key={star} type="button"
+          onClick={() => onChange?.(star)}
+          onMouseEnter={() => onChange && setHovered(star)}
+          onMouseLeave={() => onChange && setHovered(0)}
+          className={onChange ? "cursor-pointer" : "cursor-default"}>
+          <Star className="w-6 h-6 transition-colors"
+            fill={(hovered || rating) >= star ? "#f59e0b" : "none"}
+            stroke={(hovered || rating) >= star ? "#f59e0b" : "#52525b"}
+          />
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ReviewForm({ onSubmit }: { onSubmit: (r: Omit<Review, "id" | "approved" | "timestamp">) => void }) {
+  const [name, setName] = React.useState("");
+  const [role, setRole] = React.useState("");
+  const [text, setText] = React.useState("");
+  const [rating, setRating] = React.useState(5);
+  const [submitted, setSubmitted] = React.useState(false);
+
+  const handleSubmit = () => {
+    if (!name.trim() || !text.trim() || rating === 0) return;
+    onSubmit({ name: name.trim(), role: role.trim() || "Customer", text: text.trim(), rating });
+    setName(""); setRole(""); setText(""); setRating(5);
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 4000);
+  };
+
+  if (submitted) {
+    return (
+      <div className="bg-zinc-900 border border-emerald-400/20 rounded-3xl p-10 text-center">
+        <div className="text-4xl mb-4">🎉</div>
+        <div className="text-xl font-semibold text-emerald-400">Thank you for your review!</div>
+        <p className="text-zinc-400 mt-2 text-sm">Your feedback will appear once approved. We appreciate you!</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-zinc-900 border border-white/10 rounded-3xl p-6 sm:p-10">
+      <div className="mb-8">
+        <div className="text-orange-400 text-xs tracking-widest font-medium mb-1">SHARE YOUR EXPERIENCE</div>
+        <h3 className="text-3xl font-semibold tracking-tight">Leave a Review</h3>
+        <p className="text-zinc-400 text-sm mt-2">Worked with us before? Let others know how it went.</p>
+      </div>
+      <div className="space-y-4">
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs text-zinc-500 tracking-widest uppercase block mb-2">Your Name *</label>
+            <input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Kwame Asante"
+              className="w-full bg-zinc-950 border border-white/10 rounded-2xl px-5 py-3.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-orange-400/50 transition-colors"/>
+          </div>
+          <div>
+            <label className="text-xs text-zinc-500 tracking-widests uppercase block mb-2">Your Role / Business</label>
+            <input value={role} onChange={e => setRole(e.target.value)} placeholder="e.g. Event Promoter"
+              className="w-full bg-zinc-950 border border-white/10 rounded-2xl px-5 py-3.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-orange-400/50 transition-colors"/>
+          </div>
+        </div>
+        <div>
+          <label className="text-xs text-zinc-500 tracking-widests uppercase block mb-2">Your Rating *</label>
+          <StarRating rating={rating} onChange={setRating} />
+        </div>
+        <div>
+          <label className="text-xs text-zinc-500 tracking-widests uppercase block mb-2">Your Review *</label>
+          <textarea value={text} onChange={e => setText(e.target.value)}
+            placeholder="Tell us about your experience with Flyer Plug GH..."
+            rows={4}
+            className="w-full bg-zinc-950 border border-white/10 rounded-2xl px-5 py-3.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-orange-400/50 transition-colors resize-none"/>
+        </div>
+        <button onClick={handleSubmit}
+          disabled={!name.trim() || !text.trim() || rating === 0}
+          className="w-full py-4 bg-orange-500 hover:bg-orange-600 disabled:bg-zinc-800 disabled:text-zinc-600 text-black font-semibold rounded-2xl transition-all flex items-center justify-center gap-2 text-sm">
+          Submit Review <ArrowRight className="w-4 h-4" />
+        </button>
+        <p className="text-center text-xs text-zinc-600">Reviews are approved before going live.</p>
+      </div>
+    </div>
+  );
+}
+
+function AdminPanel({ reviews, onToggle, onDelete, onClose }: {
+  reviews: Review[];
+  onToggle: (id: string) => void;
+  onDelete: (id: string) => void;
+  onClose: () => void;
+}) {
+  const pending = reviews.filter(r => !r.approved);
+  const approved = reviews.filter(r => r.approved);
+
+  return (
+    <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm overflow-y-auto">
+      <div className="max-w-3xl mx-auto px-4 py-12">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <div className="text-orange-400 text-xs tracking-widest mb-1">ADMIN PANEL</div>
+            <h2 className="text-3xl font-semibold">Review Manager</h2>
+          </div>
+          <button onClick={onClose} className="p-2 bg-zinc-900 rounded-2xl hover:bg-zinc-800 transition-colors">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="bg-zinc-900 rounded-2xl p-5 border border-white/5">
+            <div className="text-3xl font-semibold">{reviews.length}</div>
+            <div className="text-zinc-500 text-xs mt-1">Total Reviews</div>
+          </div>
+          <div className="bg-zinc-900 rounded-2xl p-5 border border-emerald-400/10">
+            <div className="text-3xl font-semibold text-emerald-400">{approved.length}</div>
+            <div className="text-zinc-500 text-xs mt-1">Approved</div>
+          </div>
+          <div className="bg-zinc-900 rounded-2xl p-5 border border-orange-400/10">
+            <div className="text-3xl font-semibold text-orange-400">{pending.length}</div>
+            <div className="text-zinc-500 text-xs mt-1">Pending</div>
+          </div>
+        </div>
+
+        <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6 mb-8">
+          <div className="text-sm font-semibold mb-2 flex items-center gap-2">
+            <WhatsAppIcon className="w-4 h-4" /> WhatsApp Review Link
+          </div>
+          <p className="text-zinc-500 text-xs mb-4">Send this to customers after delivering their flyer:</p>
+          <div className="bg-zinc-950 rounded-xl p-4 text-xs text-zinc-300 font-mono leading-relaxed border border-white/5">
+            Hey! 🎉 Your flyer is ready! We'd love your feedback. Drop a quick review here:{" "}
+            <span className="text-orange-400">{window.location.origin}?review=1</span>
+            {" "}— takes 1 minute and means the world to us! 🙏
+          </div>
+          <button
+            onClick={() => {
+              const msg = `Hey! 🎉 Your flyer is ready! We'd love your feedback. Drop a quick review here: ${window.location.origin}?review=1 — takes 1 minute and means the world to us! 🙏`;
+              window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+            }}
+            className="mt-4 flex items-center gap-2 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors">
+            <WhatsAppIcon className="w-4 h-4" /> Open in WhatsApp
+          </button>
+        </div>
+
+        {pending.length > 0 && (
+          <div className="mb-8">
+            <div className="text-orange-400 text-xs tracking-widest mb-4">PENDING APPROVAL ({pending.length})</div>
+            <div className="space-y-3">
+              {pending.map(r => (
+                <div key={r.id} className="bg-zinc-900 border border-orange-400/20 rounded-2xl p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-1">
+                        <span className="font-semibold">{r.name}</span>
+                        <span className="text-zinc-500 text-xs">{r.role}</span>
+                        <StarRating rating={r.rating} />
+                      </div>
+                      <p className="text-zinc-400 text-sm leading-relaxed">"{r.text}"</p>
+                      <div className="text-zinc-600 text-xs mt-2">{new Date(r.timestamp).toLocaleDateString()}</div>
+                    </div>
+                    <div className="flex flex-col gap-2 shrink-0">
+                      <button onClick={() => onToggle(r.id)}
+                        className="px-4 py-2 bg-emerald-400/10 hover:bg-emerald-400/20 text-emerald-400 rounded-xl text-xs font-semibold transition-colors">
+                        ✓ Approve
+                      </button>
+                      <button onClick={() => onDelete(r.id)}
+                        className="px-4 py-2 bg-red-400/10 hover:bg-red-400/20 text-red-400 rounded-xl text-xs font-semibold transition-colors">
+                        ✕ Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {approved.length > 0 && (
+          <div>
+            <div className="text-emerald-400 text-xs tracking-widest mb-4">APPROVED & LIVE ({approved.length})</div>
+            <div className="space-y-3">
+              {approved.map(r => (
+                <div key={r.id} className="bg-zinc-900 border border-emerald-400/10 rounded-2xl p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-1">
+                        <span className="font-semibold">{r.name}</span>
+                        <span className="text-zinc-500 text-xs">{r.role}</span>
+                        <StarRating rating={r.rating} />
+                      </div>
+                      <p className="text-zinc-400 text-sm leading-relaxed">"{r.text}"</p>
+                    </div>
+                    <div className="flex flex-col gap-2 shrink-0">
+                      <button onClick={() => onToggle(r.id)}
+                        className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 rounded-xl text-xs font-semibold transition-colors">
+                        Unpublish
+                      </button>
+                      <button onClick={() => onDelete(r.id)}
+                        className="px-4 py-2 bg-red-400/10 hover:bg-red-400/20 text-red-400 rounded-xl text-xs font-semibold transition-colors">
+                        ✕ Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {reviews.length === 0 && (
+          <div className="text-center py-16 text-zinc-600">No reviews yet. Share the review link with your customers!</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [activeCategory, setActiveCategory] = React.useState("All");
   const [openFaq, setOpenFaq] = React.useState<number | null>(null);
   const [minutesAgo, setMinutesAgo] = React.useState(0);
   const [selectedPlan, setSelectedPlan] = React.useState<"single" | "double">("double");
+  const [reviews, setReviews] = React.useState<Review[]>([]);
+  const [showAdmin, setShowAdmin] = React.useState(false);
+  const [adminPassword, setAdminPassword] = React.useState("");
+  const [passwordError, setPasswordError] = React.useState(false);
+
+  // ── CHANGE 1: Password from environment variable, never hardcoded ──
+  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASS || "";
+
+  // ── CHANGE 2: Admin triggered by /admin URL, not secret clicks ──
+  const [showPasswordPrompt, setShowPasswordPrompt] = React.useState(
+    () => window.location.pathname === "/admin"
+  );
+
+  React.useEffect(() => {
+    setReviews(getReviews());
+    if (window.location.search.includes("review=1")) {
+      setTimeout(() => {
+        document.getElementById("leave-review")?.scrollIntoView({ behavior: "smooth" });
+      }, 800);
+    }
+  }, []);
+
+  const handleAdminLogin = () => {
+    if (adminPassword === ADMIN_PASSWORD) {
+      setShowAdmin(true);
+      setShowPasswordPrompt(false);
+      setAdminPassword("");
+      setPasswordError(false);
+      // ── CHANGE 3: Clean the URL after login so /admin doesn't stay visible ──
+      window.history.replaceState({}, "", "/");
+    } else {
+      setPasswordError(true);
+    }
+  };
+
+  const handleSubmitReview = (data: Omit<Review, "id" | "approved" | "timestamp">) => {
+    const newReview: Review = {
+      ...data,
+      id: Date.now().toString(),
+      approved: false,
+      timestamp: Date.now(),
+    };
+    const updated = [newReview, ...reviews];
+    setReviews(updated);
+    saveReviews(updated);
+  };
+
+  const handleToggleApproval = (id: string) => {
+    const updated = reviews.map(r => r.id === id ? { ...r, approved: !r.approved } : r);
+    setReviews(updated);
+    saveReviews(updated);
+  };
+
+  const handleDeleteReview = (id: string) => {
+    const updated = reviews.filter(r => r.id !== id);
+    setReviews(updated);
+    saveReviews(updated);
+  };
+
+  const approvedReviews = reviews.filter(r => r.approved);
+
+  const defaultTestimonials = [
+    { id: "d1", name: "Kwame Mensah", role: "Owner, Koko's Kitchen", text: "Got my menu flyer designed in under 2 hours. Looks very professional and my sales increased! Highly recommend.", rating: 5, approved: true, timestamp: 0 },
+    { id: "d2", name: "Ama Serwaa", role: "Afrobeats Artist", text: "The flyer for my single launch was fire! Got so many streams from the design. Fast and creative.", rating: 5, approved: true, timestamp: 0 },
+    { id: "d3", name: "Yaw Boateng", role: "Event Promoter", text: "Used them for 3 different events this year. Always on time and the designs always pop. Best in Ghana.", rating: 5, approved: true, timestamp: 0 },
+  ];
+
+  const displayedReviews = approvedReviews.length > 0 ? approvedReviews : defaultTestimonials;
 
   const heroSlides = [
     "https://picsum.photos/id/1015/620/720",
@@ -104,12 +409,6 @@ export function App() {
   const filteredItems = activeCategory === "All"
     ? portfolioItems
     : portfolioItems.filter(item => item.category === activeCategory);
-
-  const testimonials = [
-    { name: "Kwame Mensah", role: "Owner, Koko's Kitchen", text: "Got my menu flyer designed in under 2 hours. Looks very professional and my sales increased! Highly recommend.", avatar: "https://picsum.photos/id/64/128/128" },
-    { name: "Ama Serwaa", role: "Afrobeats Artist", text: "The flyer for my single launch was fire! Got so many streams from the design. Fast and creative.", avatar: "https://picsum.photos/id/65/128/128" },
-    { name: "Yaw Boateng", role: "Event Promoter", text: "Used them for 3 different events this year. Always on time and the designs always pop. Best in Ghana.", avatar: "https://picsum.photos/id/66/128/128" },
-  ];
 
   const faqs = [
     { q: "How long does delivery take?", a: "Most flyers are delivered within 30 minutes to 2 hours after you provide the details. Rush orders available." },
@@ -152,11 +451,54 @@ export function App() {
         }
       `}</style>
 
+      {/* Admin Panel */}
+      {showAdmin && (
+        <AdminPanel
+          reviews={reviews}
+          onToggle={handleToggleApproval}
+          onDelete={handleDeleteReview}
+          onClose={() => setShowAdmin(false)}
+        />
+      )}
+
+      {/* Admin Password Prompt — shows when URL is /admin */}
+      {showPasswordPrompt && (
+        <div className="fixed inset-0 z-[90] bg-black/80 backdrop-blur-sm flex items-center justify-center px-4">
+          <div className="bg-zinc-900 border border-white/10 rounded-3xl p-8 w-full max-w-sm">
+            <div className="flex items-center gap-3 mb-6">
+              <FlyerPlugLogo size="sm" />
+            </div>
+            <div className="text-orange-400 text-xs tracking-widest mb-2">ADMIN ACCESS</div>
+            <h3 className="text-xl font-semibold mb-6">Enter your password</h3>
+            <input
+              type="password"
+              value={adminPassword}
+              onChange={e => { setAdminPassword(e.target.value); setPasswordError(false); }}
+              onKeyDown={e => e.key === "Enter" && handleAdminLogin()}
+              placeholder="Password"
+              className={`w-full bg-zinc-950 border rounded-2xl px-5 py-3.5 text-sm text-white placeholder-zinc-600 focus:outline-none transition-colors mb-3 ${passwordError ? "border-red-400/50" : "border-white/10 focus:border-orange-400/50"}`}
+              autoFocus
+            />
+            {passwordError && <p className="text-red-400 text-xs mb-3">Incorrect password. Try again.</p>}
+            <div className="flex gap-3">
+              <button
+                onClick={() => { setShowPasswordPrompt(false); setAdminPassword(""); setPasswordError(false); window.history.replaceState({}, "", "/"); }}
+                className="flex-1 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-sm font-medium transition-colors">
+                Cancel
+              </button>
+              <button onClick={handleAdminLogin}
+                className="flex-1 py-3 bg-orange-500 hover:bg-orange-600 text-black rounded-2xl text-sm font-semibold transition-colors">
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-zinc-950/90 backdrop-blur-md border-b border-white/10">
         <div className="max-w-screen-2xl mx-auto px-6 py-4 flex items-center justify-between">
           <FlyerPlugLogo size="md" />
-
           <div className="hidden md:flex items-center gap-10 text-sm font-medium">
             <button onClick={() => scrollToSection("why")} className="hover:text-orange-400 transition-colors">Why Us</button>
             <button onClick={() => scrollToSection("portfolio")} className="hover:text-orange-400 transition-colors">Portfolio</button>
@@ -164,7 +506,6 @@ export function App() {
             <button onClick={() => scrollToSection("how")} className="hover:text-orange-400 transition-colors">How it Works</button>
             <button onClick={() => scrollToSection("faq")} className="hover:text-orange-400 transition-colors">FAQ</button>
           </div>
-
           <div className="hidden md:flex items-center gap-4">
             <button onClick={openInstagram} className="flex items-center gap-2 px-5 py-2.5 text-sm border border-white/30 hover:border-orange-400 rounded-2xl transition-all hover:text-orange-400">
               <InstagramIcon className="w-4 h-4" /><span>IG</span>
@@ -173,7 +514,6 @@ export function App() {
               ORDER NOW
             </button>
           </div>
-
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2">
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -206,15 +546,12 @@ export function App() {
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
               GHANA'S #1 FLYER DESIGNER
             </div>
-
             <h1 className="text-4xl sm:text-5xl md:text-[68px] leading-[1.05] font-semibold tracking-tighter">
               PREMIUM FLYERS.<br />JUST <span className="text-orange-400">GH₵30</span>
             </h1>
-
             <p className="max-w-md text-xl text-zinc-400">
               Eye-catching flyer designs for businesses, events, artists and brands across Ghana. Delivered fast.
             </p>
-
             <div className="flex flex-wrap gap-4">
               <button onClick={() => openWhatsApp()} className="group flex items-center gap-3 bg-white text-black px-9 py-4 rounded-3xl font-semibold text-lg hover:bg-amber-200 transition-all active:scale-95 shadow-xl shadow-orange-500/20">
                 ORDER ON WHATSAPP
@@ -224,7 +561,6 @@ export function App() {
                 VIEW OUR WORK
               </button>
             </div>
-
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 text-sm pt-4">
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-3">
@@ -245,7 +581,6 @@ export function App() {
             </div>
           </div>
 
-          {/* Hero Visual */}
           <div className="md:col-span-5 relative mt-4 md:mt-0 overflow-hidden md:overflow-visible">
             <div className="relative pb-8 pr-4 md:pb-0 md:pr-0">
               <div className="hidden md:block absolute -inset-8 bg-gradient-to-br from-orange-500/10 to-transparent rounded-[4rem] -rotate-6"></div>
@@ -253,7 +588,7 @@ export function App() {
                 <img
                   key={currentSlide}
                   src={heroSlides[currentSlide]}
-                  alt="Premium flyer design example"
+                  alt="Premium flyer design"
                   className="w-full max-h-[420px] md:max-h-none rounded-2xl object-cover"
                   style={{ animation: "fadeIn 0.9s ease-in-out" }}
                 />
@@ -325,7 +660,6 @@ export function App() {
               ))}
             </div>
           </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredItems.map((item) => (
               <div key={item.id} className="group relative overflow-hidden rounded-3xl bg-zinc-950 border border-white/5">
@@ -342,7 +676,6 @@ export function App() {
               </div>
             ))}
           </div>
-
           <div className="mt-16 text-center">
             <button onClick={() => openWhatsApp()} className="mx-auto border border-white/30 px-8 py-4 rounded-3xl text-sm inline-flex items-center gap-3 hover:border-orange-400 group">
               WANT A CUSTOM FLYER LIKE THESE?
@@ -380,27 +713,19 @@ export function App() {
             </div>
           </div>
 
-          {/* PRICING CARDS */}
           <div className="lg:col-span-7 flex flex-col gap-4">
-
-            {/* Plan toggle */}
             <div className="flex gap-3 mb-2">
-              <button
-                onClick={() => setSelectedPlan("single")}
-                className={`flex-1 py-3 rounded-2xl text-sm font-semibold transition-all ${selectedPlan === "single" ? "bg-zinc-700 text-white" : "bg-zinc-900 text-zinc-500 hover:text-zinc-300"}`}
-              >
+              <button onClick={() => setSelectedPlan("single")}
+                className={`flex-1 py-3 rounded-2xl text-sm font-semibold transition-all ${selectedPlan === "single" ? "bg-zinc-700 text-white" : "bg-zinc-900 text-zinc-500 hover:text-zinc-300"}`}>
                 1 Flyer
               </button>
-              <button
-                onClick={() => setSelectedPlan("double")}
-                className={`flex-1 py-3 rounded-2xl text-sm font-semibold transition-all relative ${selectedPlan === "double" ? "bg-orange-500 text-black" : "bg-zinc-900 text-zinc-500 hover:text-zinc-300"}`}
-              >
+              <button onClick={() => setSelectedPlan("double")}
+                className={`flex-1 py-3 rounded-2xl text-sm font-semibold transition-all relative ${selectedPlan === "double" ? "bg-orange-500 text-black" : "bg-zinc-900 text-zinc-500 hover:text-zinc-300"}`}>
                 2 Flyers
                 <span className="absolute -top-2 -right-2 bg-emerald-400 text-black text-[9px] font-black px-2 py-0.5 rounded-full tracking-wide">SAVE GH₵10</span>
               </button>
             </div>
 
-            {/* Single Flyer Card */}
             <div className={`bg-zinc-900 border rounded-3xl p-2 transition-all ${selectedPlan === "single" ? "border-white/20" : "border-white/5 opacity-60"}`}>
               <div className="bg-zinc-950 rounded-3xl p-6 sm:p-10">
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-start">
@@ -413,33 +738,24 @@ export function App() {
                     <div className="mt-1 text-xs text-zinc-500">per flyer</div>
                   </div>
                 </div>
-
                 <div className="my-8 h-px bg-white/5"></div>
-
                 <div className="grid grid-cols-2 gap-4 text-sm text-zinc-400">
                   <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> 1 custom design</div>
                   <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> 2 free revisions</div>
                   <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> JPG + PNG files</div>
                   <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> 90 min delivery</div>
                 </div>
-
-                <button
-                  onClick={() => openWhatsApp("single")}
-                  className="mt-8 w-full py-4 text-base font-semibold bg-zinc-800 hover:bg-zinc-700 text-white rounded-2xl transition-all flex items-center justify-center gap-3"
-                >
-                  Order 1 Flyer — GH₵30
-                  <WhatsAppIcon className="w-4 h-4" />
+                <button onClick={() => openWhatsApp("single")}
+                  className="mt-8 w-full py-4 text-base font-semibold bg-zinc-800 hover:bg-zinc-700 text-white rounded-2xl transition-all flex items-center justify-center gap-3">
+                  Order 1 Flyer — GH₵30 <WhatsAppIcon className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
-            {/* Double Flyer Card — MOST POPULAR */}
             <div className={`border rounded-3xl p-2 transition-all relative ${selectedPlan === "double" ? "bg-zinc-900 border-orange-500/50 shadow-xl shadow-orange-500/10" : "bg-zinc-900 border-white/5 opacity-60"}`}>
-              {/* Most popular badge */}
               <div className="absolute -top-3 left-8 bg-orange-500 text-black text-[10px] font-black px-4 py-1 rounded-full tracking-widest uppercase">
                 🔥 Most Popular
               </div>
-
               <div className="bg-zinc-950 rounded-3xl p-6 sm:p-10 mt-2">
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-start">
                   <div>
@@ -447,64 +763,77 @@ export function App() {
                     <div className="text-4xl sm:text-5xl font-semibold mt-2 tracking-tighter leading-none">2 Flyers</div>
                   </div>
                   <div className="text-left sm:text-right">
-                    <div className="flex items-baseline gap-2 sm:justify-end">
-                      <div className="text-5xl sm:text-6xl font-semibold tabular-nums tracking-tight text-orange-400 leading-none">GH₵50</div>
-                    </div>
+                    <div className="text-5xl sm:text-6xl font-semibold tabular-nums tracking-tight text-orange-400 leading-none">GH₵50</div>
                     <div className="mt-1 text-xs text-zinc-500">
                       <span className="line-through text-zinc-600">GH₵60</span>
                       <span className="text-emerald-400 font-semibold ml-2">SAVE GH₵10</span>
                     </div>
                   </div>
                 </div>
-
                 <div className="my-8 h-px bg-white/5"></div>
-
                 <div className="grid grid-cols-2 gap-4 text-sm text-zinc-400">
                   <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> 2 custom designs</div>
                   <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> 2 free revisions each</div>
                   <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> JPG + PNG files</div>
                   <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> 90 min delivery</div>
-                  <div className="flex items-center gap-2"><Check className="text-orange-400 w-3.5 h-3.5 shrink-0" /> <span className="text-orange-400">GH₵10 saved</span></div>
-                  <div className="flex items-center gap-2"><Check className="text-orange-400 w-3.5 h-3.5 shrink-0" /> <span className="text-orange-400">GH₵25 per flyer</span></div>
+                  <div className="flex items-center gap-2"><Check className="text-orange-400 w-3.5 h-3.5 shrink-0" /><span className="text-orange-400">GH₵10 saved</span></div>
+                  <div className="flex items-center gap-2"><Check className="text-orange-400 w-3.5 h-3.5 shrink-0" /><span className="text-orange-400">GH₵25 per flyer</span></div>
                 </div>
-
-                <button
-                  onClick={() => openWhatsApp("double")}
-                  className="mt-8 w-full py-5 text-lg font-semibold bg-orange-500 hover:bg-orange-600 text-black rounded-2xl active:scale-[0.985] transition-all flex items-center justify-center gap-3"
-                >
-                  Order 2 Flyers — GH₵50
-                  <WhatsAppIcon className="w-5 h-5" />
+                <button onClick={() => openWhatsApp("double")}
+                  className="mt-8 w-full py-5 text-lg font-semibold bg-orange-500 hover:bg-orange-600 text-black rounded-2xl active:scale-[0.985] transition-all flex items-center justify-center gap-3">
+                  Order 2 Flyers — GH₵50 <WhatsAppIcon className="w-5 h-5" />
                 </button>
-
                 <p className="text-center text-xs text-zinc-500 mt-4">You save GH₵10 compared to ordering separately</p>
               </div>
             </div>
-
             <p className="text-center text-xs text-zinc-600 mt-2">Need more? Bulk discounts available for 5+ flyers — just ask on WhatsApp.</p>
           </div>
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="max-w-screen-2xl mx-auto px-6 py-20 bg-zinc-950">
+      {/* TESTIMONIALS + REVIEW FORM */}
+      <section className="max-w-screen-2xl mx-auto px-6 py-20">
         <div className="text-center mb-16">
           <div className="text-orange-400 text-xs font-medium tracking-widest">DON'T JUST TAKE OUR WORD</div>
           <h2 className="text-5xl font-semibold tracking-tight mt-3">Real people. Real results.</h2>
+          <p className="text-zinc-500 text-sm mt-3">
+            {approvedReviews.length > 0
+              ? `${approvedReviews.length} verified review${approvedReviews.length > 1 ? "s" : ""} from real customers`
+              : "Join hundreds of satisfied customers across Ghana"}
+          </p>
         </div>
+
         <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, idx) => (
-            <div key={idx} className="bg-zinc-900 rounded-3xl p-8 border border-white/5">
-              <div className="flex gap-4">
-                <img src={testimonial.avatar} alt={testimonial.name} className="w-12 h-12 rounded-2xl object-cover" />
+          {displayedReviews.slice(0, 6).map((r, idx) => (
+            <div key={r.id || idx} className="bg-zinc-900 rounded-3xl p-8 border border-white/5">
+              <div className="flex gap-4 items-center mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-orange-500/20 flex items-center justify-center text-orange-400 font-black text-lg shrink-0">
+                  {r.name.charAt(0).toUpperCase()}
+                </div>
                 <div>
-                  <div className="font-medium">{testimonial.name}</div>
-                  <div className="text-xs text-orange-400">{testimonial.role}</div>
+                  <div className="font-medium">{r.name}</div>
+                  <div className="text-xs text-orange-400">{r.role}</div>
                 </div>
               </div>
-              <div className="mt-8 text-lg leading-tight text-zinc-300">"{testimonial.text}"</div>
-              <div className="mt-10 text-amber-400 text-xl">★★★★★</div>
+              <StarRating rating={r.rating} />
+              <div className="mt-4 text-base leading-relaxed text-zinc-300">"{r.text}"</div>
             </div>
           ))}
+        </div>
+
+        <div id="leave-review" className="mt-16 grid lg:grid-cols-2 gap-8 items-start">
+          <div className="flex flex-col justify-center">
+            <div className="text-orange-400 text-xs tracking-widest font-medium mb-3">YOUR TURN</div>
+            <h3 className="text-4xl font-semibold tracking-tight">Worked with us?<br />Tell the world.</h3>
+            <p className="text-zinc-400 mt-4 text-lg max-w-sm">Your honest review helps other Ghanaian businesses find and trust us. Takes less than 2 minutes.</p>
+            <div className="mt-8 flex items-center gap-4 text-sm text-zinc-500">
+              <div className="flex">
+                {[1,2,3,4,5].map(s => <Star key={s} className="w-4 h-4 fill-amber-400 stroke-amber-400"/>)}
+              </div>
+              <span>Reviews go live after approval</span>
+            </div>
+          </div>
+          <ReviewForm onSubmit={handleSubmitReview} />
         </div>
       </section>
 
@@ -579,7 +908,9 @@ export function App() {
           <div className="md:col-span-5">
             <FlyerPlugLogo size="lg" />
             <div className="mt-6 text-zinc-400 max-w-xs">Fast, clean and professional flyer designs for the modern Ghanaian entrepreneur.</div>
-            <div className="mt-8 text-xs text-zinc-500">©️ {new Date().getFullYear()} Flyer Plug GH. All rights reserved.</div>
+            <div className="mt-8 text-xs text-zinc-600">
+              ©️ {new Date().getFullYear()} Flyer Plug GH. All rights reserved.
+            </div>
           </div>
 
           <div className="md:col-span-3">
@@ -588,11 +919,12 @@ export function App() {
               <button onClick={() => scrollToSection("portfolio")} className="text-left hover:text-orange-400 w-fit">Portfolio</button>
               <button onClick={() => scrollToSection("pricing")} className="text-left hover:text-orange-400 w-fit">Pricing</button>
               <button onClick={() => scrollToSection("how")} className="text-left hover:text-orange-400 w-fit">Process</button>
+              <button onClick={() => scrollToSection("leave-review")} className="text-left hover:text-orange-400 w-fit">Leave a Review</button>
             </div>
           </div>
 
           <div className="md:col-span-4">
-            <div className="uppercase text-xs tracking-widest mb-6 text-zinc-400">GET IN TOUCH</div>
+            <div className="uppercase text-xs tracking-widests mb-6 text-zinc-400">GET IN TOUCH</div>
             <div className="flex flex-col gap-4">
               <a href={`https://wa.me/${whatsappNumber.replace("+", "")}`} target="_blank" className="flex items-center gap-4 group">
                 <div className="w-12 h-12 bg-green-500/10 rounded-2xl flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
