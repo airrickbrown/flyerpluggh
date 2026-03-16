@@ -6,84 +6,88 @@ import { Menu, X, ArrowRight, Check, Instagram } from "lucide-react";
 
 // LOGO COMPONENT 
 
-export function FlyerPlugLogo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
-  const scales = { sm: 0.75, md: 1, lg: 1.35 };
-  const s = scales[size];
+// export function FlyerPlugLogo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
+//   const scales = { sm: 0.75, md: 1, lg: 1.35 };
+//   const s = scales[size];
 
-  return (
-    <svg
-      width={Math.round(180 * s)}
-      height={Math.round(40 * s)}
-      viewBox="0 0 180 40"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-label="Flyer Plug GH"
-    >
-      {/* ── Icon tile ── */}
-      <rect x="0" y="2" width="36" height="36" rx="9" fill="#1a1a1a" stroke="#333" strokeWidth="1" />
+//   return (
+//     <svg
+//       width={Math.round(180 * s)}
+//       height={Math.round(40 * s)}
+//       viewBox="0 0 180 40"
+//       fill="none"
+//       xmlns="http://www.w3.org/2000/svg"
+//       aria-label="Flyer Plug GH"
+//     >
+//       {/* ── Icon tile ── */}
+//       <rect x="0" y="2" width="36" height="36" rx="9" fill="#1a1a1a" stroke="#333" strokeWidth="1" />
 
-      {/* Ghana flag tri-color bar across bottom of tile */}
-      <clipPath id="tileClip">
-        <rect x="0" y="2" width="36" height="36" rx="9" />
-      </clipPath>
-      <g clipPath="url(#tileClip)">
-        <rect x="0" y="29" width="12" height="9" fill="#CE1126" /> {/* Red */}
-        <rect x="12" y="29" width="12" height="9" fill="#FCD116" /> {/* Gold */}
-        <rect x="24" y="29" width="12" height="9" fill="#006B3F" /> {/* Green */}
-      </g>
+//       {/* Ghana flag tri-color bar across bottom of tile */}
+//       <clipPath id="tileClip">
+//         <rect x="0" y="2" width="36" height="36" rx="9" />
+//       </clipPath>
+//       <g clipPath="url(#tileClip)">
+//         <rect x="0" y="29" width="12" height="9" fill="#CE1126" /> {/* Red */}
+//         <rect x="12" y="29" width="12" height="9" fill="#FCD116" /> {/* Gold */}
+//         <rect x="24" y="29" width="12" height="9" fill="#006B3F" /> {/* Green */}
+//       </g>
 
-      {/* Ghana Black Star — centered in tile */}
-      <polygon
-        points="18,7 19.8,13 26,13 21,16.8 22.8,23 18,19.2 13.2,23 15,16.8 10,13 16.2,13"
-        fill="#FCD116"
-      />
+//       {/* Ghana Black Star — centered in tile */}
+//       <polygon
+//         points="18,7 19.8,13 26,13 21,16.8 22.8,23 18,19.2 13.2,23 15,16.8 10,13 16.2,13"
+//         fill="#FCD116"
+//       />
 
-      {/* ── Wordmark ── */}
-      {/* FLYER */}
-      <text
-        x="46"
-        y="26"
-        fontFamily="'Arial Black', 'Arial Bold', Arial, sans-serif"
-        fontWeight="900"
-        fontSize="17"
-        letterSpacing="-0.5"
-        fill="#ffffff"
-      >
-        FLYER
-      </text>
+//       {/* ── Wordmark ── */}
+//       {/* FLYER */}
+//       <text
+//         x="46"
+//         y="26"
+//         fontFamily="'Arial Black', 'Arial Bold', Arial, sans-serif"
+//         fontWeight="900"
+//         fontSize="17"
+//         letterSpacing="-0.5"
+//         fill="#ffffff"
+//       >
+//         FLYER
+//       </text>
 
-      {/* PLUG — in Ghana gold */}
-      <text
-        x="105"
-        y="26"
-        fontFamily="'Arial Black', 'Arial Bold', Arial, sans-serif"
-        fontWeight="900"
-        fontSize="17"
-        letterSpacing="-0.5"
-        fill="#FCD116"
-      >
-        PLUG 
-      </text>
+//       {/* PLUG — in Ghana gold */}
+//       <text
+//         x="105"
+//         y="26"
+//         fontFamily="'Arial Black', 'Arial Bold', Arial, sans-serif"
+//         fontWeight="900"
+//         fontSize="17"
+//         letterSpacing="-0.5"
+//         fill="#FCD116"
+//       >
+//         PLUG 
+//       </text>
 
-      {/* GH tag */}
-      <text
-        x="152"
-        y="33"
-        fontFamily="Arial, sans-serif"
-        fontWeight="700"
-        fontSize="8"
-        letterSpacing="1.5"
-        fill="#FCD116"
-        opacity="0.7"
-      >
-        GH
-      </text>
+//       {/* GH tag */}
+//       <text
+//         x="152"
+//         y="33"
+//         fontFamily="Arial, sans-serif"
+//         fontWeight="700"
+//         fontSize="8"
+//         letterSpacing="1.5"
+//         fill="#FCD116"
+//         opacity="0.7"
+//       >
+//         GH
+//       </text>
 
-      {/* Small Ghana flag dot next to GH */}
-      <circle cx="148" cy="31" r="2.5" fill="#CE1126" opacity="0.8" />
-    </svg>
-  );
-}
+//       {/* Small Ghana flag dot next to GH */}
+//       <circle cx="148" cy="31" r="2.5" fill="#CE1126" opacity="0.8" />
+//     </svg>
+//   );
+// }
+
+
+
+
 
 export function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
