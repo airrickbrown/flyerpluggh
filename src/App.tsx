@@ -1,101 +1,74 @@
 import React from "react";
-import { Menu, X, ArrowRight, Check, Instagram } from "lucide-react";
+import { Menu, X, ArrowRight, Check } from "lucide-react";
 
+// ── Instagram SVG — official gradient ──
+function InstagramIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
+      <defs>
+        <radialGradient id="ig-grad" cx="30%" cy="107%" r="150%">
+          <stop offset="0%" stopColor="#fdf497"/>
+          <stop offset="5%" stopColor="#fdf497"/>
+          <stop offset="45%" stopColor="#fd5949"/>
+          <stop offset="60%" stopColor="#d6249f"/>
+          <stop offset="90%" stopColor="#285AEB"/>
+        </radialGradient>
+      </defs>
+      <path fill="url(#ig-grad)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+    </svg>
+  );
+}
 
+// ── WhatsApp SVG — official green ──
+function WhatsAppIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
+      <path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.198-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.485-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.355l-.14-.083-3.454.905.92-3.38-.223-.14a9.86 9.86 0 01-1.52-5.183c0-5.45 4.436-9.886 9.888-9.886 2.64 0 5.122 1.03 6.986 2.894a9.825 9.825 0 012.893 6.985c0 5.45-4.437 9.886-9.888 9.886z"/>
+    </svg>
+  );
+}
 
-
-// LOGO COMPONENT 
-
-// export function FlyerPlugLogo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
-//   const scales = { sm: 0.75, md: 1, lg: 1.35 };
-//   const s = scales[size];
-
-//   return (
-//     <svg
-//       width={Math.round(180 * s)}
-//       height={Math.round(40 * s)}
-//       viewBox="0 0 180 40"
-//       fill="none"
-//       xmlns="http://www.w3.org/2000/svg"
-//       aria-label="Flyer Plug GH"
-//     >
-//       {/* ── Icon tile ── */}
-//       <rect x="0" y="2" width="36" height="36" rx="9" fill="#1a1a1a" stroke="#333" strokeWidth="1" />
-
-//       {/* Ghana flag tri-color bar across bottom of tile */}
-//       <clipPath id="tileClip">
-//         <rect x="0" y="2" width="36" height="36" rx="9" />
-//       </clipPath>
-//       <g clipPath="url(#tileClip)">
-//         <rect x="0" y="29" width="12" height="9" fill="#CE1126" /> {/* Red */}
-//         <rect x="12" y="29" width="12" height="9" fill="#FCD116" /> {/* Gold */}
-//         <rect x="24" y="29" width="12" height="9" fill="#006B3F" /> {/* Green */}
-//       </g>
-
-//       {/* Ghana Black Star — centered in tile */}
-//       <polygon
-//         points="18,7 19.8,13 26,13 21,16.8 22.8,23 18,19.2 13.2,23 15,16.8 10,13 16.2,13"
-//         fill="#FCD116"
-//       />
-
-//       {/* ── Wordmark ── */}
-//       {/* FLYER */}
-//       <text
-//         x="46"
-//         y="26"
-//         fontFamily="'Arial Black', 'Arial Bold', Arial, sans-serif"
-//         fontWeight="900"
-//         fontSize="17"
-//         letterSpacing="-0.5"
-//         fill="#ffffff"
-//       >
-//         FLYER
-//       </text>
-
-//       {/* PLUG — in Ghana gold */}
-//       <text
-//         x="105"
-//         y="26"
-//         fontFamily="'Arial Black', 'Arial Bold', Arial, sans-serif"
-//         fontWeight="900"
-//         fontSize="17"
-//         letterSpacing="-0.5"
-//         fill="#FCD116"
-//       >
-//         PLUG 
-//       </text>
-
-//       {/* GH tag */}
-//       <text
-//         x="152"
-//         y="33"
-//         fontFamily="Arial, sans-serif"
-//         fontWeight="700"
-//         fontSize="8"
-//         letterSpacing="1.5"
-//         fill="#FCD116"
-//         opacity="0.7"
-//       >
-//         GH
-//       </text>
-
-//       {/* Small Ghana flag dot next to GH */}
-//       <circle cx="148" cy="31" r="2.5" fill="#CE1126" opacity="0.8" />
-//     </svg>
-//   );
-// }
-
-
-
-
+// ── Flyer Plug GH Logo — Option A ──
+function FlyerPlugLogo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
+  const sizes = { sm: 34, md: 40, lg: 52 };
+  const px = sizes[size];
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <svg width={px} height={px} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="38" height="38" rx="10" fill="#1a1a1a" stroke="#2a2a2a" strokeWidth="1.5"/>
+        <clipPath id="fpClip"><rect x="1" y="1" width="38" height="38" rx="10"/></clipPath>
+        <g clipPath="url(#fpClip)">
+          <rect x="1" y="31" width="13" height="9" fill="#CE1126"/>
+          <rect x="14" y="31" width="13" height="9" fill="#FCD116"/>
+          <rect x="27" y="31" width="12" height="9" fill="#006B3F"/>
+        </g>
+        <text x="5" y="28" fontFamily="Arial Black, Arial, sans-serif" fontWeight="900" fontSize="21" fill="#ffffff" letterSpacing="-1">FP</text>
+        <polygon points="33,3 34.4,7.8 39.5,7.8 35.5,10.8 37,15.5 33,12.5 29,15.5 30.5,10.8 26.5,7.8 31.6,7.8" fill="#FCD116"/>
+      </svg>
+      <div>
+        <div style={{
+          color: "#ffffff", fontWeight: 900,
+          fontSize: size === "lg" ? 20 : size === "md" ? 16 : 13,
+          letterSpacing: 1, lineHeight: 1.1,
+          fontFamily: "Arial Black, Arial, sans-serif"
+        }}>FLYER PLUG</div>
+        <div style={{
+          color: "#FCD116", fontSize: size === "lg" ? 9 : 8,
+          letterSpacing: 2, fontFamily: "Arial, sans-serif",
+          fontWeight: 700, marginTop: 1
+        }}>GH</div>
+      </div>
+    </div>
+  );
+}
 
 export function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [activeCategory, setActiveCategory] = React.useState("All");
   const [openFaq, setOpenFaq] = React.useState<number | null>(null);
   const [minutesAgo, setMinutesAgo] = React.useState(0);
+  const [selectedPlan, setSelectedPlan] = React.useState<"single" | "double">("double");
 
-  // All your hero flyer images — add/swap as many as you want here
   const heroSlides = [
     "https://picsum.photos/id/1015/620/720",
     "https://picsum.photos/id/133/620/720",
@@ -104,10 +77,8 @@ export function App() {
     "https://picsum.photos/id/251/620/720",
   ];
 
-  // Pick one random image per page load — stays fixed until next refresh
   const [currentSlide] = React.useState(() => Math.floor(Math.random() * heroSlides.length));
 
-  // Live-ticking "last order" counter
   React.useEffect(() => {
     const start = Math.floor(Math.random() * 14) + 4;
     setMinutesAgo(start);
@@ -119,7 +90,6 @@ export function App() {
 
   const whatsappNumber = "+233530283723";
   const instagramHandle = "@flyerplugh";
-
   const categories = ["All", "Business", "Events", "Birthday", "Music", "Church"];
 
   const portfolioItems = [
@@ -161,8 +131,11 @@ export function App() {
     setIsMenuOpen(false);
   };
 
-  const openWhatsApp = () => {
-    const message = "Hello Flyer Plug GH! I'm interested in getting a flyer designed for GH₵30. Can we discuss?";
+  const openWhatsApp = (plan?: "single" | "double") => {
+    const p = plan || selectedPlan;
+    const message = p === "double"
+      ? "Hello Flyer Plug GH! I'd like the 2 Flyers deal for GH₵50. Can we get started?"
+      : "Hello Flyer Plug GH! I'd like 1 Flyer for GH₵30. Can we get started?";
     window.open(`https://wa.me/${whatsappNumber.replace("+", "")}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
@@ -181,14 +154,7 @@ export function App() {
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-zinc-950/90 backdrop-blur-md border-b border-white/10">
-        <div className="max-w-screen-2xl mx-auto px-6 py-5 flex items-center justify-between">
-          {/* <div className="flex items-center gap-3">
-            <div className="h-9 w-9 bg-orange-500 rounded-xl flex items-center justify-center text-black font-bold text-2xl">F</div>
-            <div>
-              <div className="font-semibold tracking-tighter text-2xl">FLYER PLUG</div>
-              <div className="text-[10px] text-orange-400 -mt-1">GH</div>
-            </div>
-          </div> */}
+        <div className="max-w-screen-2xl mx-auto px-6 py-4 flex items-center justify-between">
           <FlyerPlugLogo size="md" />
 
           <div className="hidden md:flex items-center gap-10 text-sm font-medium">
@@ -201,10 +167,9 @@ export function App() {
 
           <div className="hidden md:flex items-center gap-4">
             <button onClick={openInstagram} className="flex items-center gap-2 px-5 py-2.5 text-sm border border-white/30 hover:border-orange-400 rounded-2xl transition-all hover:text-orange-400">
-              <Instagram className="w-4 h-4" />
-              <span>IG</span>
+              <InstagramIcon className="w-4 h-4" /><span>IG</span>
             </button>
-            <button onClick={openWhatsApp} className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-black px-8 py-2.5 rounded-2xl font-semibold text-sm transition-all active:scale-[0.985]">
+            <button onClick={() => openWhatsApp()} className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-black px-8 py-2.5 rounded-2xl font-semibold text-sm transition-all active:scale-[0.985]">
               ORDER NOW
             </button>
           </div>
@@ -223,11 +188,10 @@ export function App() {
             <button onClick={() => scrollToSection("faq")} className="text-left py-2">FAQ</button>
             <div className="pt-6 border-t border-white/10 flex flex-col gap-4">
               <button onClick={openInstagram} className="flex items-center justify-center gap-3 py-4 border border-white/30 rounded-3xl">
-                <Instagram className="w-5 h-5" /> Follow on Instagram
+                <InstagramIcon className="w-5 h-5" /> Follow on Instagram
               </button>
-              <button onClick={openWhatsApp} className="py-4 bg-orange-500 text-black font-semibold rounded-3xl flex items-center justify-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.198-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.485-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.355l-.14-.083-3.454.905.92-3.38-.223-.14a9.86 9.86 0 01-1.52-5.183c0-5.45 4.436-9.886 9.888-9.886 2.64 0 5.122 1.03 6.986 2.894a9.825 9.825 0 012.893 6.985c0 5.45-4.437 9.886-9.888 9.886z" /></svg>
-                WhatsApp Us
+              <button onClick={() => openWhatsApp()} className="py-4 bg-orange-500 text-black font-semibold rounded-3xl flex items-center justify-center gap-2">
+                <WhatsAppIcon className="w-5 h-5" /> WhatsApp Us
               </button>
             </div>
           </div>
@@ -252,7 +216,7 @@ export function App() {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <button onClick={openWhatsApp} className="group flex items-center gap-3 bg-white text-black px-9 py-4 rounded-3xl font-semibold text-lg hover:bg-amber-200 transition-all active:scale-95 shadow-xl shadow-orange-500/20">
+              <button onClick={() => openWhatsApp()} className="group flex items-center gap-3 bg-white text-black px-9 py-4 rounded-3xl font-semibold text-lg hover:bg-amber-200 transition-all active:scale-95 shadow-xl shadow-orange-500/20">
                 ORDER ON WHATSAPP
                 <ArrowRight className="group-hover:translate-x-1 transition" />
               </button>
@@ -281,7 +245,7 @@ export function App() {
             </div>
           </div>
 
-          {/* Hero Visual — random image per page load with fade+zoom */}
+          {/* Hero Visual */}
           <div className="md:col-span-5 relative mt-4 md:mt-0 overflow-hidden md:overflow-visible">
             <div className="relative pb-8 pr-4 md:pb-0 md:pr-0">
               <div className="hidden md:block absolute -inset-8 bg-gradient-to-br from-orange-500/10 to-transparent rounded-[4rem] -rotate-6"></div>
@@ -293,7 +257,6 @@ export function App() {
                   className="w-full max-h-[420px] md:max-h-none rounded-2xl object-cover"
                   style={{ animation: "fadeIn 0.9s ease-in-out" }}
                 />
-                {/* Live minutes-ago badge */}
                 <div className="absolute -bottom-5 right-2 md:-right-5 bg-zinc-900 border border-white/10 text-xs px-4 md:px-6 py-3 rounded-2xl shadow-xl flex items-center gap-3">
                   <div className="text-emerald-400">✓</div>
                   <div>
@@ -355,13 +318,8 @@ export function App() {
             </div>
             <div className="flex flex-wrap gap-2">
               {categories.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-6 py-2 text-sm rounded-3xl transition-all whitespace-nowrap ${activeCategory === cat
-                    ? "bg-orange-400 text-black font-medium"
-                    : "bg-zinc-800 hover:bg-zinc-700 text-zinc-300"}`}
-                >
+                <button key={cat} onClick={() => setActiveCategory(cat)}
+                  className={`px-6 py-2 text-sm rounded-3xl transition-all whitespace-nowrap ${activeCategory === cat ? "bg-orange-400 text-black font-medium" : "bg-zinc-800 hover:bg-zinc-700 text-zinc-300"}`}>
                   {cat}
                 </button>
               ))}
@@ -372,11 +330,7 @@ export function App() {
             {filteredItems.map((item) => (
               <div key={item.id} className="group relative overflow-hidden rounded-3xl bg-zinc-950 border border-white/5">
                 <div className="overflow-hidden">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full aspect-[4/5] object-cover transition-all group-hover:scale-105 duration-700"
-                  />
+                  <img src={item.image} alt={item.title} className="w-full aspect-[4/5] object-cover transition-all group-hover:scale-105 duration-700"/>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/90 to-transparent h-2/5"></div>
                 <div className="absolute bottom-0 p-6 w-full">
@@ -390,7 +344,7 @@ export function App() {
           </div>
 
           <div className="mt-16 text-center">
-            <button onClick={openWhatsApp} className="mx-auto border border-white/30 px-8 py-4 rounded-3xl text-sm inline-flex items-center gap-3 hover:border-orange-400 group">
+            <button onClick={() => openWhatsApp()} className="mx-auto border border-white/30 px-8 py-4 rounded-3xl text-sm inline-flex items-center gap-3 hover:border-orange-400 group">
               WANT A CUSTOM FLYER LIKE THESE?
               <span className="group-hover:translate-x-1 transition">→</span>
             </button>
@@ -400,18 +354,18 @@ export function App() {
 
       {/* PRICING */}
       <section id="pricing" className="max-w-screen-2xl mx-auto px-6 py-24">
-        <div className="grid lg:grid-cols-12 gap-16 items-center">
+        <div className="grid lg:grid-cols-12 gap-16 items-start">
           <div className="lg:col-span-5">
             <div className="sticky top-28">
               <div className="inline px-4 py-1.5 text-xs rounded-3xl bg-orange-400/10 text-orange-400">STARTING AT</div>
               <div className="text-[92px] leading-none font-semibold tracking-tighter mt-3 mb-6">GH₵<span className="text-orange-400">30</span></div>
-              <h2 className="text-5xl font-semibold tracking-tight">One Premium Flyer</h2>
-              <p className="text-zinc-400 mt-6 text-lg max-w-sm">Everything you need to promote your business, event or brand in style.</p>
+              <h2 className="text-5xl font-semibold tracking-tight">Simple, honest pricing.</h2>
+              <p className="text-zinc-400 mt-6 text-lg max-w-sm">One flyer or two — we've got a deal that works for you. No hidden fees, ever.</p>
               <ul className="space-y-6 mt-12">
                 {[
                   "Fully custom design tailored to you",
                   "High resolution (1080x1080 or 1080x1920)",
-                  "Unlimited revisions within reason",
+                  "2 free revisions per flyer",
                   "Source files available on request",
                   "Delivered via WhatsApp in 90 mins or less"
                 ].map((item, i) => (
@@ -426,64 +380,107 @@ export function App() {
             </div>
           </div>
 
-          <div className="lg:col-span-7">
-            <div className="bg-zinc-900 border border-white/10 rounded-3xl p-2">
-              <div className="bg-zinc-950 rounded-3xl p-6 sm:p-12 overflow-hidden">
-                <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:items-start">
+          {/* PRICING CARDS */}
+          <div className="lg:col-span-7 flex flex-col gap-4">
+
+            {/* Plan toggle */}
+            <div className="flex gap-3 mb-2">
+              <button
+                onClick={() => setSelectedPlan("single")}
+                className={`flex-1 py-3 rounded-2xl text-sm font-semibold transition-all ${selectedPlan === "single" ? "bg-zinc-700 text-white" : "bg-zinc-900 text-zinc-500 hover:text-zinc-300"}`}
+              >
+                1 Flyer
+              </button>
+              <button
+                onClick={() => setSelectedPlan("double")}
+                className={`flex-1 py-3 rounded-2xl text-sm font-semibold transition-all relative ${selectedPlan === "double" ? "bg-orange-500 text-black" : "bg-zinc-900 text-zinc-500 hover:text-zinc-300"}`}
+              >
+                2 Flyers
+                <span className="absolute -top-2 -right-2 bg-emerald-400 text-black text-[9px] font-black px-2 py-0.5 rounded-full tracking-wide">SAVE GH₵10</span>
+              </button>
+            </div>
+
+            {/* Single Flyer Card */}
+            <div className={`bg-zinc-900 border rounded-3xl p-2 transition-all ${selectedPlan === "single" ? "border-white/20" : "border-white/5 opacity-60"}`}>
+              <div className="bg-zinc-950 rounded-3xl p-6 sm:p-10">
+                <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-start">
                   <div>
-                    <div className="text-orange-400 font-medium">MOST POPULAR</div>
-                    <div className="text-5xl sm:text-6xl font-semibold mt-2 tracking-tighter leading-none">Premium Flyer</div>
+                    <div className="text-zinc-400 text-xs font-medium tracking-widest uppercase">Standard</div>
+                    <div className="text-4xl sm:text-5xl font-semibold mt-2 tracking-tighter leading-none">1 Flyer</div>
                   </div>
                   <div className="text-left sm:text-right">
-                    <div className="text-6xl sm:text-7xl font-semibold tabular-nums tracking-tight text-orange-400 leading-none">30</div>
-                    <div className="mt-1 sm:-mt-2 text-xs sm:text-sm text-zinc-400">GHANAIAN CEDIS</div>
+                    <div className="text-5xl sm:text-6xl font-semibold tabular-nums tracking-tight text-white leading-none">GH₵30</div>
+                    <div className="mt-1 text-xs text-zinc-500">per flyer</div>
                   </div>
                 </div>
 
-                <div className="my-14 h-px bg-white/10"></div>
+                <div className="my-8 h-px bg-white/5"></div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8 text-sm">
-                  <div className="space-y-6">
-                    <div className="flex justify-between">
-                      <span className="text-zinc-400">Design concept</span>
-                      <span className="font-medium">1 concept</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-zinc-400">Revisions</span>
-                      <span className="font-medium">2 free revisions</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-zinc-400">File formats</span>
-                      <span className="font-medium">JPG + PNG</span>
-                    </div>
-                  </div>
-                  <div className="space-y-6">
-                    <div className="flex justify-between">
-                      <span className="text-zinc-400">Delivery time</span>
-                      <span className="font-medium text-emerald-400">90 mins avg</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-zinc-400">Print ready</span>
-                      <span className="font-medium">Yes</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-zinc-400">Social media optimized</span>
-                      <span className="font-medium">Yes</span>
-                    </div>
-                  </div>
+                <div className="grid grid-cols-2 gap-4 text-sm text-zinc-400">
+                  <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> 1 custom design</div>
+                  <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> 2 free revisions</div>
+                  <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> JPG + PNG files</div>
+                  <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> 90 min delivery</div>
                 </div>
 
                 <button
-                  onClick={openWhatsApp}
-                  className="mt-16 w-full py-6 text-lg font-semibold bg-orange-500 text-black rounded-3xl active:scale-[0.985] transition-all flex items-center justify-center gap-3"
+                  onClick={() => openWhatsApp("single")}
+                  className="mt-8 w-full py-4 text-base font-semibold bg-zinc-800 hover:bg-zinc-700 text-white rounded-2xl transition-all flex items-center justify-center gap-3"
                 >
-                  GET YOUR FLYER FOR GH₵30
-                  <ArrowRight />
+                  Order 1 Flyer — GH₵30
+                  <WhatsAppIcon className="w-4 h-4" />
                 </button>
-
-                <p className="text-center text-xs text-zinc-500 mt-8">Bulk discounts available for 5+ flyers</p>
               </div>
             </div>
+
+            {/* Double Flyer Card — MOST POPULAR */}
+            <div className={`border rounded-3xl p-2 transition-all relative ${selectedPlan === "double" ? "bg-zinc-900 border-orange-500/50 shadow-xl shadow-orange-500/10" : "bg-zinc-900 border-white/5 opacity-60"}`}>
+              {/* Most popular badge */}
+              <div className="absolute -top-3 left-8 bg-orange-500 text-black text-[10px] font-black px-4 py-1 rounded-full tracking-widest uppercase">
+                🔥 Most Popular
+              </div>
+
+              <div className="bg-zinc-950 rounded-3xl p-6 sm:p-10 mt-2">
+                <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-start">
+                  <div>
+                    <div className="text-orange-400 text-xs font-medium tracking-widest uppercase">Best Value</div>
+                    <div className="text-4xl sm:text-5xl font-semibold mt-2 tracking-tighter leading-none">2 Flyers</div>
+                  </div>
+                  <div className="text-left sm:text-right">
+                    <div className="flex items-baseline gap-2 sm:justify-end">
+                      <div className="text-5xl sm:text-6xl font-semibold tabular-nums tracking-tight text-orange-400 leading-none">GH₵50</div>
+                    </div>
+                    <div className="mt-1 text-xs text-zinc-500">
+                      <span className="line-through text-zinc-600">GH₵60</span>
+                      <span className="text-emerald-400 font-semibold ml-2">SAVE GH₵10</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="my-8 h-px bg-white/5"></div>
+
+                <div className="grid grid-cols-2 gap-4 text-sm text-zinc-400">
+                  <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> 2 custom designs</div>
+                  <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> 2 free revisions each</div>
+                  <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> JPG + PNG files</div>
+                  <div className="flex items-center gap-2"><Check className="text-emerald-400 w-3.5 h-3.5 shrink-0" /> 90 min delivery</div>
+                  <div className="flex items-center gap-2"><Check className="text-orange-400 w-3.5 h-3.5 shrink-0" /> <span className="text-orange-400">GH₵10 saved</span></div>
+                  <div className="flex items-center gap-2"><Check className="text-orange-400 w-3.5 h-3.5 shrink-0" /> <span className="text-orange-400">GH₵25 per flyer</span></div>
+                </div>
+
+                <button
+                  onClick={() => openWhatsApp("double")}
+                  className="mt-8 w-full py-5 text-lg font-semibold bg-orange-500 hover:bg-orange-600 text-black rounded-2xl active:scale-[0.985] transition-all flex items-center justify-center gap-3"
+                >
+                  Order 2 Flyers — GH₵50
+                  <WhatsAppIcon className="w-5 h-5" />
+                </button>
+
+                <p className="text-center text-xs text-zinc-500 mt-4">You save GH₵10 compared to ordering separately</p>
+              </div>
+            </div>
+
+            <p className="text-center text-xs text-zinc-600 mt-2">Need more? Bulk discounts available for 5+ flyers — just ask on WhatsApp.</p>
           </div>
         </div>
       </section>
@@ -544,11 +541,8 @@ export function App() {
           </div>
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <div
-                key={index}
-                onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                className="border border-white/10 bg-zinc-900 rounded-3xl cursor-pointer overflow-hidden"
-              >
+              <div key={index} onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                className="border border-white/10 bg-zinc-900 rounded-3xl cursor-pointer overflow-hidden">
                 <div className="px-8 py-6 flex justify-between items-center">
                   <div className="text-lg font-medium pr-8">{faq.q}</div>
                   <div className={`text-3xl text-orange-400 transition-transform ${openFaq === index ? "rotate-45" : ""}`}>+</div>
@@ -568,13 +562,11 @@ export function App() {
           <h2 className="text-6xl font-semibold tracking-tight leading-none">Ready to get a flyer<br />that actually works?</h2>
           <p className="mt-8 text-xl text-zinc-400 max-w-xs mx-auto">Stop using boring templates. Get a custom design today.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
-            <button onClick={openWhatsApp} className="flex-1 sm:flex-none bg-white text-black py-5 px-14 rounded-3xl font-semibold text-lg flex items-center justify-center gap-3 hover:bg-amber-100">
-              <span>CHAT ON WHATSAPP</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.198-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.485-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.355l-.14-.083-3.454.905.92-3.38-.223-.14a9.86 9.86 0 01-1.52-5.183c0-5.45 4.436-9.886 9.888-9.886 2.64 0 5.122 1.03 6.986 2.894a9.825 9.825 0 012.893 6.985c0 5.45-4.437 9.886-9.888 9.886z" /></svg>
+            <button onClick={() => openWhatsApp()} className="flex-1 sm:flex-none bg-white text-black py-5 px-14 rounded-3xl font-semibold text-lg flex items-center justify-center gap-3 hover:bg-amber-100">
+              CHAT ON WHATSAPP <WhatsAppIcon className="w-5 h-5" />
             </button>
             <button onClick={openInstagram} className="flex-1 sm:flex-none border border-white/60 py-5 px-10 rounded-3xl font-medium flex items-center justify-center gap-2 hover:bg-white/5">
-              <Instagram className="w-5 h-5" />
-              DM US ON INSTAGRAM
+              <InstagramIcon className="w-5 h-5" /> DM US ON INSTAGRAM
             </button>
           </div>
           <div className="text-xs mt-12 text-zinc-500">Average response time: 4 minutes</div>
@@ -585,11 +577,7 @@ export function App() {
       <footer className="bg-black border-t border-white/10 py-16">
         <div className="max-w-screen-2xl mx-auto px-6 grid md:grid-cols-12 gap-y-12">
           <div className="md:col-span-5">
-            {/* <div className="flex items-center gap-3">
-              <div className="h-9 w-9 bg-orange-500 text-black rounded-2xl flex items-center justify-center text-3xl font-black">F</div>
-              <div className="font-semibold text-3xl tracking-tighter">FLYER PLUG GH</div>
-            </div> */}
-            <FlyerPlugLogo size="lg"/>
+            <FlyerPlugLogo size="lg" />
             <div className="mt-6 text-zinc-400 max-w-xs">Fast, clean and professional flyer designs for the modern Ghanaian entrepreneur.</div>
             <div className="mt-8 text-xs text-zinc-500">©️ {new Date().getFullYear()} Flyer Plug GH. All rights reserved.</div>
           </div>
@@ -607,17 +595,17 @@ export function App() {
             <div className="uppercase text-xs tracking-widest mb-6 text-zinc-400">GET IN TOUCH</div>
             <div className="flex flex-col gap-4">
               <a href={`https://wa.me/${whatsappNumber.replace("+", "")}`} target="_blank" className="flex items-center gap-4 group">
-                <div className="w-12 h-12 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-400 group-hover:bg-green-500/20 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.198-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.485-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.355l-.14-.083-3.454.905.92-3.38-.223-.14a9.86 9.86 0 01-1.52-5.183c0-5.45 4.436-9.886 9.888-9.886 2.64 0 5.122 1.03 6.986 2.894a9.825 9.825 0 012.893 6.985c0 5.45-4.437 9.886-9.888 9.886z" /></svg>
+                <div className="w-12 h-12 bg-green-500/10 rounded-2xl flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
+                  <WhatsAppIcon className="w-6 h-6" />
                 </div>
                 <div>
                   <div className="font-medium text-lg">WhatsApp</div>
-                  <div className="text-zinc-400 text-sm">+233 55 123 4567</div>
+                  <div className="text-zinc-400 text-sm">{whatsappNumber}</div>
                 </div>
               </a>
               <a href={`https://instagram.com/${instagramHandle.replace("@", "")}`} target="_blank" className="flex items-center gap-4 group">
-                <div className="w-12 h-12 bg-pink-500/10 rounded-2xl flex items-center justify-center text-pink-400 group-hover:bg-pink-500/20 transition-colors">
-                  <Instagram className="w-6 h-6" />
+                <div className="w-12 h-12 bg-purple-500/10 rounded-2xl flex items-center justify-center group-hover:bg-purple-500/20 transition-colors">
+                  <InstagramIcon className="w-6 h-6" />
                 </div>
                 <div>
                   <div className="font-medium text-lg">Instagram</div>
@@ -626,8 +614,7 @@ export function App() {
               </a>
             </div>
             <div className="mt-14 text-xs text-zinc-500 leading-loose">
-              Accra, Ghana<br />
-              Serving clients nationwide
+              Accra, Ghana<br />Serving clients nationwide
             </div>
           </div>
         </div>
